@@ -5,17 +5,18 @@ export default class ProductController {
     getProducts(req, res){
         let products = ProductModel.get();
         console.log(products);
-        res.render('products',{products:products})
+        return res.render('products',{products:products})
        //res.sendFile(path.join(path.resolve(),'src','views','products.html'));
     }
 
     getNewForm(req, res){
-        res.render('new-product');
+       return res.render('new-product', {errorMessage:null});
     }
 
-    addNewProduct(req,res){
+    addNewProduct(req,res, next){
+        
+        ProductModel.add(req.body);
         let products = ProductModel.get();
-        console.log(req.body);
-        res.render('products',{products:products});
+        return res.render('products',{products:products});
     }
 }
