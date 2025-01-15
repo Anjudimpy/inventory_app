@@ -1,21 +1,38 @@
-const validationRequest = (req,res, next) =>{
-    const {name,price, imageUrl} = req.body;
-    let errors = [];
-    if(!name || name.trim() == ''){
-        errors.push('Name is required');
-    }
-    if(!price || parseFloat(price)<1){
-        errors.push('Price must be positive');
-    }
-    try{
-       const validUrl = new URL(imageUrl);
-    }catch(err){
-        errors.push('Url is Invaild');
-    }
+import {body, validationResult} from 'express-validator';
 
-    if(errors.length>0){
-        return res.render('new-product',{errorMessage:errors[0]})
+const validationRequest =  async (req,res, next) =>{
+//1. using Node.js
+
+    // const {name,price, imageUrl} = req.body;
+    // let errors = [];
+    // if(!name || name.trim() == ''){
+    //     errors.push('Name is required');
+    // }
+    // if(!price || parseFloat(price)<1){
+    //     errors.push('Price must be positive');
+    // }
+    // try{
+    //    const validUrl = new URL(imageUrl);
+    // }catch(err){
+    //     errors.push('Url is Invaild');
+    // }
+
+//2. using express.js
+
+      const rules = [
+          body('name').notEmpty().withMessage('Name is required'),
+          body('price').isFloat({gt:0}).withMessage('Price should be positive number'),
+          body('imageUrl').isURL().withMessage('Invalid url')
+      ];
+
+      await Promise.all(
+         rules.map((rule) => rule.run(req))
+      );
+
+      var validationErrors = validationResult(req)  
+    if(!validationErrors.isEmpty()){
+        return res.render('new-product',{errorMessage:validationErrors.array()[0].msg});
     }
     next();
-}
+};
 export default validationRequest;
