@@ -1,0 +1,22 @@
+<div class="container mt-5">
+ <% if(products.length>0) { %>
+<div class="row">
+    <% products.forEach(product => { %>
+        <tr>
+            <th><%= product.id %></th>
+            <td><%= product.name %></td>
+            <td><%= product.desc %></td>
+            <td scope="col"><%=  product.price %></td>
+            <td>
+                <img src="<%= product.imageUrl %>" />
+            </td>
+            <td>
+                <a href="/update-product/<%= product.id %>" class="btn btn-warning">Update</a>
+                <!-- <a href="/delete-product/<%= product.id %>" class="btn btn-danger">Delete</a> -->
+                 <button class="btn btn-danger" onclick="deleteProduct('<%= product.id %>')">Delete</button>
+            </td>
+        </tr>
+     <% }) %>
+</div>
+ <%}%>
+</div>

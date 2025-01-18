@@ -1,3 +1,4 @@
+import { error } from 'console';
 import {body, validationResult} from 'express-validator';
 
 const validationRequest =  async (req,res, next) =>{
@@ -22,7 +23,13 @@ const validationRequest =  async (req,res, next) =>{
       const rules = [
           body('name').notEmpty().withMessage('Name is required'),
           body('price').isFloat({gt:0}).withMessage('Price should be positive number'),
-          body('imageUrl').isURL().withMessage('Invalid url')
+        //body('imageUrl').isURL().withMessage('Invalid url')
+          body('imageUrl').custom((value, {req}) =>{
+            if(!req.file){
+                throw new Error('Image is required');
+            }
+            return true;
+          }),
       ];
 
       await Promise.all(

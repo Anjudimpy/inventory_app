@@ -20,16 +20,28 @@ export default class ProductModel {
       products[index] = productObj;
     }
 
-    static add(productObj){
+    static delete(id){
+      const index = products.findIndex((p) =>p.id ==id);
+      products.splice(index,1);
+    }
+
+    static searchResult(name){
+      const data = products.filter((p) => p.name == name)
+      return data;
+    }
+
+    static add(name, price, desc, imageUrl){
       let newProduct = new ProductModel(
         products.length + 1,
-        productObj.name,
-        productObj.desc,
-        productObj.price,
-        productObj.imageUrl
+        name,
+        desc,
+        price,
+        imageUrl
       )
       products.push(newProduct);
     }
+
+ 
 }
 
 var products = [

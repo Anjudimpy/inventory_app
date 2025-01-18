@@ -14,8 +14,9 @@ export default class ProductController {
     }
 
     addNewProduct(req,res, next){
-        
-        ProductModel.add(req.body);
+        const {name, desc, price} = req.body;
+        const imageUrl = "images/"+req.file.filename;
+        ProductModel.add(name, desc, price, imageUrl);
         let products = ProductModel.get();
         return res.render('products',{products:products});
     }
@@ -36,5 +37,22 @@ export default class ProductController {
         ProductModel.update(req.body);
         var products= ProductModel.get();
         res.render('products',{products});
+    }
+
+    deleteProduct(req,res){
+        const id = req.params.id;
+        const productFound = ProductModel.getById(id);
+        if(!productFound){
+            res.status(401).send("product not found")
+        }
+        ProductModel.delete(id);
+        var products = ProductModel.get();
+        res.render('products',{products});
+    }
+
+    search(req,res){
+        const searchItem = req.body.name;
+        const products =ProductModel.searchResult(searchItem);
+        res.render('searchResult',{products});
     }
 }
