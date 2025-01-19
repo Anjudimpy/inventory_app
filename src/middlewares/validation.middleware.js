@@ -1,4 +1,4 @@
-import { error } from 'console';
+
 import {body, validationResult} from 'express-validator';
 
 const validationRequest =  async (req,res, next) =>{
