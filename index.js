@@ -42,7 +42,9 @@ server.post('/search',auth, productController.search );
 server.get('/register', userController.getRegister);
 server.post('/register', userController.postRegister)
 server.get('/login', userController.getLogin);
-server.post('/login', userController.postLogin)
+server.post('/login', userController.postLogin);
+server.get('/logout', userController.logout);
+
 server.use(express.static('src/views'));
 
 server.listen(3400);
