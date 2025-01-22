@@ -7,12 +7,16 @@ import { uploadFile } from './src/middlewares/file-upload.middleware.js';
 import UserController from './src/controllers/user.controller.js';
 import session from 'express-session';
 import { auth } from './src/middlewares/auth.middleware.js';
+import cookieParser from 'cookie-parser';
+import { setLastVisit } from './src/middlewares/lastVisit.middleware.js';
 
 const server = express();
 
 //parse from data
 server.use(express.urlencoded({ extended: true }));
 server.use(express.static('public'));
+server.use(cookieParser());
+
 
 server.use(
     session({
@@ -32,7 +36,7 @@ server.use(ejsLayouts);
 //Create an instance of ProductController
 const productController =  new ProductController();
 const userController = new UserController();
-server.get('/', auth, productController.getProducts);
+server.get('/', auth,setLastVisit, productController.getProducts);
 server.get('/new', auth, productController.getNewForm);
 server.post('/', auth, uploadFile.single('imageUrl'), validationRequest, productController.addNewProduct);
 server.get('/update-product/:id',auth, productController.getUpdateProduct);
