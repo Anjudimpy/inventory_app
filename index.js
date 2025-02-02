@@ -31,6 +31,7 @@ server.use(
 server.set('view engine', 'ejs');
 server.set('views', path.join(path.resolve(), 'src', 'views'));
 
+server.use(express.static('src/views'));
 server.use(ejsLayouts);
 
 //Create an instance of ProductController
@@ -49,6 +50,5 @@ server.get('/login', userController.getLogin);
 server.post('/login', userController.postLogin);
 server.get('/logout', userController.logout);
 
-server.use(express.static('src/views'));
 
 server.listen(3400);
